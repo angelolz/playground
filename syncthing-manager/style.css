@@ -1,0 +1,30 @@
+body {
+    background-color: #121212;
+    color: #ffffff;
+  }
+  
+  textarea.form-control,
+  input.form-control {
+    font-family: monospace;
+    white-space: pre;
+    background-color: #1e1e1e !important;
+    color: #ffffff;
+    border: 1px solid #444 !important; /* dark grey border */
+    box-shadow: none;
+  }
+  
+  textarea.form-control:focus,
+  input.form-control:focus {
+    border-color: #666 !important;
+    outline: none;
+    box-shadow: none !important;
+  }
+  
+  .form-label {
+    color: #ffffff;
+  }
+  
+  .form-section {
+    margin-bottom: 1rem;
+  }
+  

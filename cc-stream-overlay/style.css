@@ -1,0 +1,115 @@
+:root {
+    --anim-time: 0.5s;
+}
+
+html {
+    font-family: 'Kavoon', cursive;
+}
+
+body {
+    margin: 0;
+}
+
+#cookie {
+    height: 80px;
+    width: 80px;
+    top: 35px;
+    left: 35px;
+    position: absolute;
+    z-index: 1;
+    animation: zoom 8s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+
+}
+
+#shine {
+    height: 150px;
+    width: 150px;
+    opacity: 75%;
+    animation: spin 20s linear infinite;
+}
+
+.stats {
+    color: white;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.stats p {
+    margin: 0;
+}
+
+#stat-name {
+    font-size: 32px;
+}
+
+#stat-value {
+    font-size: 52px;
+}
+
+.container {
+    display: flex;
+}
+
+.center {
+    align-items: center;
+}
+
+.row {
+    flex-direction: row;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.transition {
+    z-index: 1;
+    animation: slide-out,slide-in;
+    animation-duration: var(--anim-time), var(--anim-time);
+    animation-delay: 0s, var(--anim-time);
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45), cubic-bezier(0, 0.55, 0.45, 1);
+}
+
+@keyframes slide-out {
+    from {
+        opacity: 100%;
+        transform: translateX(0px);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+}
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+
+    100% {
+        opacity: 100%;
+        transform: translateX(0px);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes zoom {
+    0% {
+        transform: scale(1, 1);
+    }
+    50% {
+        transform: scale(0.90, 0.90);
+    }
+    100% {
+        transform: scale(1, 1);
+    }
+}

@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <title>ROBO-SEARCH!</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+</html>
+<body>
+    <div class="flex">
+        <div class="flex column main center">
+            <img class="logo" src="logo.png"/>
+            <!-- <h1 class="logo">ROBO-SEARCH!</h1> -->
+            <div class="search">
+                <p id="info" class="center">Search the web using Robo-Search!</p>
+                <div class="flex row">
+                    <input class="text" id="search-box" type="text">
+                    <button onclick="displayText()">Search</button>
+                </div>
+            </div>
+            <div id="displayArea"></div>
+        </div>
+    </div>
+
+    <button id="toggleModeButton" onclick="toggleMode()">Dark Mode</button>
+
+    <script>
+        function displayText() {
+            var text = document.getElementById('search-box').value;
+
+            var newTextDiv = document.createElement('div');
+            newTextDiv.className = 'text-entry';
+            newTextDiv.innerText = text;
+
+            var displayArea = document.getElementById('displayArea');
+            displayArea.insertBefore(newTextDiv, displayArea.firstChild);
+            
+            document.getElementById('search-box').value = '';
+        }
+
+        document.getElementById('search-box').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                displayText();
+            }
+        });
+
+        function toggleMode() {
+            var body = document.body;
+            var button = document.getElementById('toggleModeButton');
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+                button.classList.add('light-mode');
+            } else {
+                button.textContent = 'Dark Mode';
+                button.classList.remove('light-mode');
+            }
+        }
+    </script>
+</body>
