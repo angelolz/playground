@@ -30,42 +30,43 @@
   
         <div class="form-section">
           <label class="form-label">Config Path</label>
-          <input type="text" id="config" class="form-control bg-dark text-light" value="/mnt/SF-Apps/appdata/syncthing/config">
+          <input type="text" id="config" class="form-control bg-dark text-light">
         </div>
   
         <div class="form-section">
           <label class="form-label">Shared Libraries Path</label>
-          <input type="text" id="sharedLibs" class="form-control bg-dark text-light" value="/mnt/SF-Store/StarMedia/Music/Shared Libraries">
+          <input type="text" id="sharedLibs" class="form-control bg-dark text-light">
         </div>
-  
+        
+        <h3>Libraries (host path|mount name)</h3>
         <div class="form-section">
-            <label class="form-label">TFA FLAC (host path|mount name)</label>
+            <label class="form-label">TFA FLAC</label>
             <textarea id="tfaFlac" class="form-control bg-dark text-light" rows="4"></textarea>
             <input type="file" id="tfaFlacFile" accept=".txt" class="form-control bg-dark text-light mt-2" onchange="loadFileToTextarea(this, 'tfaFlac')">
           </div>
           
   
         <div class="form-section">
-          <label class="form-label">TFA MP3 (host path|mount name)</label>
+          <label class="form-label">TFA MP3</label>
           <textarea id="tfaMp3" class="form-control bg-dark text-light border-darkgray" rows="4"></textarea>
           <input type="file" id="tfaMp3File" accept=".txt" class="form-control bg-dark text-light mt-2" onchange="loadFileToTextarea(this, 'tfaMp3')">
         </div>
   
         <div class="form-section">
-          <label class="form-label">Crackhead FLAC (host path|mount name)</label>
-          <textarea id="crackheadFlac" class="form-control bg-dark text-light border-darkgray" rows="4"></textarea>
-          <input type="file" id="crackheadFlacFile" accept=".txt" class="form-control bg-dark text-light mt-2" onchange="loadFileToTextarea(this, 'crackheadFlac')">
+          <label class="form-label">Crackhead List</label>
+          <textarea id="crackheadList" class="form-control bg-dark text-light border-darkgray" rows="4"></textarea>
+          <input type="file" id="crackheadListFile" accept=".txt" class="form-control bg-dark text-light mt-2" onchange="loadFileToTextarea(this, 'crackheadList')">
         </div>
   
         <div class="form-section">
-          <label class="form-label">Crackhead MP3 (host path|mount name)</label>
-          <textarea id="crackheadMp3" class="form-control bg-dark text-light border-darkgray" rows="4"></textarea>
-          <input type="file" id="crackheadMp3File" accept=".txt" class="form-control bg-dark text-light mt-2" onchange="loadFileToTextarea(this, 'crackheadMp3')">
+          <label class="form-label">Others</label>
+          <textarea id="otherList" class="form-control bg-dark text-light border-darkgray" rows="4"></textarea>
+          <input type="file" id="otherFile" accept=".txt" class="form-control bg-dark text-light mt-2" onchange="loadFileToTextarea(this, 'otherList')">
         </div>
   
         <button class="btn btn-outline-light mb-4 w-100" onclick="generateCompose()">Generate Docker Compose</button>
       </div>
-      
+
       <div class="col-lg-6">
         <label class="form-label">Generated docker-compose.yml</label>
         <textarea id="output" class="form-control bg-dark text-light border-darkgray" rows="38" readonly></textarea>
