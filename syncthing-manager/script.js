@@ -94,4 +94,15 @@ function loadFileToTextarea(inputElement, targetTextareaId) {
     reader.readAsText(file);
 }
 
+function loadFromLocalStorage() {
+    const fields = ["puid", "pgid", "tz", "config", "sharedLibs"];
+    fields.forEach((id) => {
+        const el = document.getElementById(id);
+        const savedValue = localStorage.getItem(id);
+        if (el && savedValue) {
+            el.value = savedValue;
+        }
+    });
+}
+
 window.addEventListener("DOMContentLoaded", loadFromLocalStorage);
