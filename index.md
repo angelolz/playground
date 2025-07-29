@@ -4,6 +4,6 @@ These are a bunch of tiny projects that I spent a few hours on, and probably won
 
 ## List of projects
 
--   [Cookie Clicker Stream Overlay](/cc-stream-overlay)
--   [Robo-search](/robo-search)
--   [Syncthing Manager](/syncthing-manager/)
+-   Cookie Clicker Stream Overlay [[Website](/cc-stream-overlay/index.html) | [Code](https://github.com/angelolz/playground/tree/master/cc-stream-overlay)]
+-   Robo-search [[Website](/robo-search/index.html) | [Code](https://github.com/angelolz/playground/tree/master/robo-search)]
+-   Syncthing Manager /syncthing-manager [[Website](/syncthing-manager/index.html) | [Code](https://github.com/angelolz/playground/tree/master/syncthing-manager)]
