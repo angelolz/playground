@@ -78,6 +78,23 @@ networks: {}`;
     document.getElementById("output").value = yaml;
 }
 
+function copyToClipboard() {
+    const output = document.getElementById("output");
+    const copyButton = document.getElementById("copyButton");
+
+    navigator.clipboard.writeText(output.value)
+        .then(() => {
+            copyButton.textContent = "Copied!";
+            setTimeout(() => {
+                copyButton.textContent = "Copy to Clipboard";
+            }, 2000); // Revert back to original text after 2 seconds
+        })
+        .catch(err => {
+            console.error('Failed to copy text: ', err);
+            copyButton.textContent = "Failed to copy";
+        });
+}
+
 function loadFileToTextarea(inputElement, targetTextareaId) {
     const file = inputElement.files[0];
     if (!file || file.type !== "text/plain") {
