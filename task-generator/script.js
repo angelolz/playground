@@ -33,7 +33,7 @@ input_number:
 input_boolean:
     ${idPrefix}_enabled:
         name: ${taskName} Enabled
-        icon: ${icon}
+        icon: mdi:${icon}
 
 input_text:
     ${idPrefix}_message:
