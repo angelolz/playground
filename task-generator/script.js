@@ -10,7 +10,7 @@ function generateYaml() {
     saveToLocalStorage();
 
     const taskName = document.getElementById("taskName").value;
-    const idPrefix = document.getElementById("idPrefix").value;
+    const idPrefix = slugify(taskName);
     const interval = document.getElementById("interval").value;
     const icon = document.getElementById("icon").value;
     const choreMessage = document.getElementById("choreMessage").value;
