@@ -43,7 +43,6 @@ input_text:
 template:
     - sensor:
           - name: "${taskName} Days Since"
-            unique_id: ${idPrefix}_days_since
             unit_of_measurement: "days"
             state: >
                 {% set dt = states('input_datetime.${idPrefix}_last') %}
@@ -54,7 +53,6 @@ template:
                 {% endif %}
 
           - name: "${taskName} Overdue"
-            unique_id: ${idPrefix}_overdue
             state: >
                 {{ states('sensor.${slugify(taskName + " Days Since")}') | int
                    > states('input_number.${idPrefix}_interval') | int }}
@@ -98,7 +96,7 @@ function slugify(name) {
         .toLowerCase() // lowercase
         .trim() // remove leading/trailing spaces
         .replace(/\s+/g, "_") // replace spaces with underscores
-        .replace(/[^\w_]+/g, ""); // remove non-word characters except underscore
+        .replace(/[^\w_]+/g, "_"); // remove non-word characters except underscore
 }
 
 window.addEventListener("DOMContentLoaded", () => {
