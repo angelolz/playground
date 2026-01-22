@@ -27,7 +27,7 @@ input_number:
 input_boolean:
     ${idPrefix}_enabled:
         name: ${taskName} Enabled
-        icon: ${icon}
+        icon: mdi:${icon}
 
 input_text:
     ${idPrefix}_message:
@@ -37,7 +37,7 @@ input_text:
 input_button:
     ${idPrefix}_done:
         name: ${taskName} Done
-        icon: ${icon}
+        icon: mdi:${icon}
 
 automation:
     - alias: Chores - ${taskName} Done
