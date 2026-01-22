@@ -1,21 +1,15 @@
 function saveToLocalStorage() {
-    const fields = ["taskName", "idPrefix", "interval", "icon", "choreMessage"];
+    const fields = ["taskName", "interval", "icon", "choreMessage"];
     fields.forEach((id) => {
         const el = document.getElementById(id);
         if (el) localStorage.setItem(id, el.value);
     });
 }
 
-function generateYaml() {
-    saveToLocalStorage();
-
-    const taskName = document.getElementById("taskName").value;
+function generateYamlContent(taskName, interval, icon, choreMessage) {
     const idPrefix = slugify(taskName);
-    const interval = document.getElementById("interval").value;
-    const icon = document.getElementById("icon").value;
-    const choreMessage = document.getElementById("choreMessage").value;
 
-    const yaml = `input_datetime:
+    return `input_datetime:
     ${idPrefix}_last:
         name: Last ${taskName}
         has_date: true
@@ -33,12 +27,30 @@ input_number:
 input_boolean:
     ${idPrefix}_enabled:
         name: ${taskName} Enabled
-        icon: mdi:${icon}
+        icon: ${icon}
 
 input_text:
     ${idPrefix}_message:
         name: ${taskName} Notification
         initial: "${choreMessage}"
+
+input_button:
+    ${idPrefix}_done:
+        name: ${taskName} Done
+        icon: ${icon}
+
+automation:
+    - alias: Chores - ${taskName} Done
+      mode: single
+      trigger:
+        - platform: state
+          entity_id: input_button.${idPrefix}_done
+      action:
+        - service: input_datetime.set_datetime
+          target:
+            entity_id: input_datetime.${idPrefix}_last
+          data:
+            date: "{{ now().date() }}"
 
 template:
     - sensor:
@@ -58,7 +70,17 @@ template:
                    > states('input_number.${idPrefix}_interval') | int }}
             icon: mdi:alert-circle
 `;
+}
 
+function generateYaml() {
+    saveToLocalStorage();
+
+    const taskName = document.getElementById("taskName").value;
+    const interval = document.getElementById("interval").value;
+    const icon = document.getElementById("icon").value;
+    const choreMessage = document.getElementById("choreMessage").value;
+
+    const yaml = generateYamlContent(taskName, interval, icon, choreMessage);
     document.getElementById("output").value = yaml;
 }
 
@@ -81,7 +103,7 @@ function copyToClipboard() {
 }
 
 function loadFromLocalStorage() {
-    const fields = ["taskName", "idPrefix", "interval", "icon", "choreMessage"];
+    const fields = ["taskName", "interval", "icon", "choreMessage"];
     fields.forEach((id) => {
         const el = document.getElementById(id);
         const savedValue = localStorage.getItem(id);
@@ -99,7 +121,54 @@ function slugify(name) {
         .replace(/[^\w_]+/g, "_"); // remove non-word characters except underscore
 }
 
+function downloadFile(filename, content) {
+    const element = document.createElement("a");
+    element.setAttribute("href", "data:text/yaml;charset=utf-8," + encodeURIComponent(content));
+    element.setAttribute("download", filename);
+
+    element.style.display = "none";
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
+function processBulkTasks() {
+    const bulkTasks = document.getElementById("bulkTasks").value.trim();
+    const generatedFilesDiv = document.getElementById("generatedFiles");
+    generatedFilesDiv.innerHTML = "<h4>Generated Files:</h4>";
+
+    if (bulkTasks === "") {
+        generatedFilesDiv.innerHTML += "<p>No tasks entered.</p>";
+        return;
+    }
+
+    const lines = bulkTasks.split("\n");
+    lines.forEach((line) => {
+        const parts = line.split("|").map((part) => part.trim());
+        if (parts.length < 4) {
+            generatedFilesDiv.innerHTML += `<p class="text-danger">Skipping invalid line: ${line}</p>`;
+            return;
+        }
+
+        const [taskName, interval, icon, choreMessage, customFilename] = parts;
+        const yamlContent = generateYamlContent(taskName, interval, icon, choreMessage);
+        const filename = customFilename || `${slugify(taskName)}.yaml`;
+
+        downloadFile(filename, yamlContent);
+
+        const fileLink = document.createElement("a");
+        fileLink.href = "data:text/yaml;charset=utf-8," + encodeURIComponent(yamlContent);
+        fileLink.download = filename;
+        fileLink.textContent = filename;
+        fileLink.classList.add("d-block");
+        generatedFilesDiv.appendChild(fileLink);
+    });
+}
+
 window.addEventListener("DOMContentLoaded", () => {
     loadFromLocalStorage();
     generateYaml();
+    document.getElementById("processBulk").addEventListener("click", processBulkTasks);
 });

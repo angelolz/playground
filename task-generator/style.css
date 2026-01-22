@@ -13,11 +13,21 @@ body {
     box-shadow: none;
   }
   
+  textarea.form-control::placeholder,
+  input.form-control::placeholder {
+    color: #cccccc; /* Light gray for placeholder text */
+    opacity: 1; /* Ensure full opacity */
+  }
+  
   textarea.form-control:focus,
   input.form-control:focus {
     border-color: #666 !important;
     outline: none;
     box-shadow: none !important;
+  }
+  
+  #bulkTasks {
+    color: #ffffff !important;
   }
   
   .form-label {

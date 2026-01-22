@@ -44,6 +44,16 @@
             <button id="copyButton" class="btn btn-outline-light mt-2 w-100" onclick="copyToClipboard()">Copy to Clipboard</button>
           </div>
         </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <h2 class="text-center">Bulk Task Processor</h2>
+                <p class="text-center">Enter tasks line by line, with fields separated by pipes (|).<br>Format: <code>Task Name|Interval|Icon|Chore Message|Filename (optional)</code></p>
+                <textarea id="bulkTasks" class="form-control border-darkgray" rows="10" placeholder="Mop Floors|7|mdi:broom|🧹 The floors are due for mopping!|mop_floors.yaml"></textarea>
+                <button id="processBulk" class="btn btn-outline-light mt-2 w-100">Process Bulk Tasks & Download Files</button>
+                <div id="generatedFiles" class="mt-3"></div>
+            </div>
+        </div>
       </div>
     </div>
   
