@@ -64,6 +64,14 @@ template:
                   0
                 {% endif %}
 
+          - name: "${taskName} Days Left"
+            unit_of_measurement: "days"
+            state: >
+                {% set interval = states('input_number.${idPrefix}_interval') | int(0) %}
+                {% set days = states('sensor.${idPrefix}_days_since') | int(0) %}
+                {{ [interval - days, 0] | max }}
+            icon: mdi:calendar-clock
+
           - name: "${taskName} Overdue"
             state: >
                 {{ states('sensor.${slugify(taskName + " Days Since")}') | int
