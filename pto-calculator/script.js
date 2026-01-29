@@ -1,10 +1,44 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const themeToggle = document.getElementById('themeToggle');
     const currentPtoInput = document.getElementById('currentPto');
     const accrualRateInput = document.getElementById('accrualRate');
     const targetDateInput = document.getElementById('targetDate');
     const calculateBtn = document.getElementById('calculateBtn');
     const estimatedPtoSpan = document.getElementById('estimatedPto');
     const payPeriodsInfo = document.getElementById('payPeriodsInfo');
+
+    // Theme switcher logic
+    const userPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const savedTheme = localStorage.getItem('theme');
+
+    const setTheme = (isDark) => {
+        if (isDark) {
+            document.body.classList.add('dark-mode');
+            themeToggle.checked = true;
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.body.classList.remove('dark-mode');
+            themeToggle.checked = false;
+            localStorage.setItem('theme', 'light');
+        }
+    };
+
+    if (savedTheme === 'dark' || (savedTheme === null && userPrefersDark)) {
+        setTheme(true);
+    } else {
+        setTheme(false);
+    }
+
+    themeToggle.addEventListener('change', () => {
+        setTheme(themeToggle.checked);
+    });
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (localStorage.getItem('theme') === null) {
+            setTheme(e.matches);
+        }
+    });
+
 
     // Set default target date to 3 months from now
     const today = new Date();
@@ -33,46 +67,41 @@ document.addEventListener('DOMContentLoaded', () => {
             payPeriodsInfo.textContent = '';
             return;
         }
-
-        let payPeriods = 0;
-        let currentDate = new Date(startDate);
-        currentDate.setDate(currentDate.getDate() + 1); // Start from tomorrow to count future pay periods
-
-        while (currentDate <= targetDate) {
-            // Check if it's a Friday
-            if (currentDate.getDay() === 5) { // Friday is 5
-                payPeriods++;
-            }
-            currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
-        }
         
-        // Adjust for bi-weekly pay periods
-        // Since we counted every Friday, we need to divide by 2 for bi-weekly periods
-        // If today is a Friday and before a hypothetical next pay period, it might count today's pay period.
-        // Let's refine the pay period calculation:
-        // Find the next upcoming Friday pay date from today.
-        const todayDay = startDate.getDay(); // 0 = Sunday, 5 = Friday, 6 = Saturday
-        let daysUntilNextPayFriday = 0;
+        // Refined pay period calculation
+        const todayDay = startDate.getDay(); // 0 = Sunday, 5 = Friday
+        let firstPayday = new Date(startDate);
 
-        if (todayDay <= 5) { // If today is Sun, Mon, Tue, Wed, Thu, Fri
-            daysUntilNextPayFriday = 5 - todayDay;
-        } else { // If today is Saturday
-            daysUntilNextPayFriday = 6; // To next Friday
+        // Find the most recent pay-Friday. Paydays are every other Friday.
+        // Let's assume one of the recent Fridays was a payday to establish a cycle.
+        // A robust solution would need a known payday. Let's assume a "reference" payday.
+        // For this example, let's establish a cycle based on a known recent payday, e.g., Jan 5, 2024.
+        const referencePayday = new Date('2024-01-05T00:00:00'); 
+        const msPerDay = 24 * 60 * 60 * 1000;
+        const daysSinceReference = Math.floor((startDate - referencePayday) / msPerDay);
+        const weekDifference = Math.floor(daysSinceReference / 7);
+
+        let nextPayDate;
+
+        if (weekDifference % 2 === 0) { // We are in a "pay week" cycle
+            // Find the upcoming Friday of this week
+            firstPayday.setDate(startDate.getDate() - todayDay + 5);
+        } else { // We are in an "off week" cycle
+            // Find the Friday of next week
+            firstPayday.setDate(startDate.getDate() - todayDay + 12);
         }
 
-        let nextPayDate = new Date(startDate);
-        nextPayDate.setDate(startDate.getDate() + daysUntilNextPayFriday);
-
-        if (nextPayDate < startDate) { // If today is Friday and a pay period passed
-             nextPayDate.setDate(nextPayDate.getDate() + 14); // Next pay period is 2 weeks later
+        // If the calculated first payday is in the past, move to the next pay cycle
+        if (firstPayday < startDate) {
+            firstPayday.setDate(firstPayday.getDate() + 14);
         }
 
         let actualPayPeriods = 0;
-        // Move nextPayDate to the first upcoming pay period that is after startDate
-        // and on or before targetDate
-        while (nextPayDate <= targetDate) {
+        let currentPayDate = new Date(firstPayday);
+
+        while (currentPayDate <= targetDate) {
             actualPayPeriods++;
-            nextPayDate.setDate(nextPayDate.getDate() + 14); // Next bi-weekly pay period
+            currentPayDate.setDate(currentPayDate.getDate() + 14); // Move to the next payday
         }
         
         const accruedPto = actualPayPeriods * accrualRate;
