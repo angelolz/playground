@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PTO Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>PTO Calculator</h1>
+        <div class="input-group">
+            <label for="currentPto">Current PTO Balance (hours):</label>
+            <input type="number" id="currentPto" value="0" min="0">
+        </div>
+        <div class="input-group">
+            <label for="accrualRate">PTO Accrual per Pay Period (hours):</label>
+            <input type="number" id="accrualRate" value="4" min="0">
+        </div>
+        <div class="input-group">
+            <label for="targetDate">Calculate PTO by Date:</label>
+            <input type="date" id="targetDate">
+        </div>
+        <button id="calculateBtn">Calculate PTO</button>
+        <div class="result">
+            <h2>Estimated PTO: <span id="estimatedPto">0</span> hours</h2>
+            <p id="payPeriodsInfo"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
